@@ -1,0 +1,41 @@
+{
+  "builders": [
+    {
+      "accelerator": "kvm",
+      "boot_command": [
+        "<tab> text ks=http://{{.HTTPIP}}:{{.HTTPPort}}/ks.cfg<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "disk_size": 5000,
+      "format": "qcow2",
+      "headless": true,
+      "http_directory": "http",
+      "iso_checksum": "f90e4d28fa377669b2db16cbcb451fcb9a89d2460e3645993e30e137ac37d284",
+      "iso_checksum_type": "sha256",
+      "iso_url": "http://monkey.goathorde.org:81/artifactory/iso/centos/CentOS-7-x86_64-Minimal-1511.iso",
+      "output_directory": "images/",
+      "qemuargs": [
+        [ "-m", "1024M" ],
+        [ "-smp", "1" ]
+      ],
+      "shutdown_command": "echo '/sbin/halt -h -p' > /tmp/shutdown.sh; echo 'centos'|sudo -S sh '/tmp/shutdown.sh'",
+      "ssh_password": "centos",
+      "ssh_username": "centos",
+      "ssh_wait_timeout": "240m",
+      "type": "qemu",
+      "vm_name": "centos.qcow2"
+    }
+  ],
+  "provisioners": [
+    {
+      "execute_command": "echo 'centos'|sudo -S sh '{{.Path}}'",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/cloud.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "variables": {
+    "os_source_image": "afcbcdee-c7dd-405c-94b7-0822d04e5b22",
+    "os_network": "43113c63-582f-4672-9f02-e84f8d6be9c0",
+    "output_name": "k8s-yjlinux-7-v1.0"
+  },
+
+  "builders": [
+    {
+      "type": "openstack",
+      "ssh_username": "centos",
+      "image_name": "{{user `output_name`}}",
+      "source_image": "{{user `os_source_image`}}",
+      "flavor": "m1.medium",
+      "networks": "{{user `os_network`}}",
+      "ssh_pty": true
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "pause_before": "15s",
+      "script": "scripts/wait_for_cloudinit.sh"
+    },
+
+    {
+      "type": "shell",
+      "script": "scripts/install_common.sh"
+    },
+
+    {
+      "type": "shell",
+      "script": "scripts/install_docker.sh"
+    },
+
+    {
+      "type": "shell",
+      "script": "scripts/install_networkenv.sh"
+    },
+
+    {
+      "type": "shell",
+      "script": "scripts/install_kube-common.sh"
+    },
+
+    {
+      "type": "shell",
+      "script": "scripts/install_etcd-common.sh"
+    },
+
+    {
+      "type": "shell",
+      "script": "scripts/install_calico-common.sh"
+    },
+
+    {
+      "type": "shell",
+      "script": "scripts/prep_image.sh"
+    }
+  ]
+}

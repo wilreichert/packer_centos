@@ -1,0 +1,33 @@
+{
+  "variables": {
+    "os_source_image": "afcbcdee-c7dd-405c-94b7-0822d04e5b22",
+    "os_network": "43113c63-582f-4672-9f02-e84f8d6be9c0",
+    "output_name": "centos"
+  },
+
+  "builders": [
+    {
+      "type": "openstack",
+      "ssh_username": "centos",
+      "image_name": "{{user `output_name`}}",
+      "source_image": "{{user `os_source_image`}}",
+      "flavor": "m1.small",
+      "networks": "{{user `os_network`}}",
+      "ssh_pty": true
+    }
+  ],
+
+  "provisioners": [
+    {
+      "execute_command": "echo 'centos'|sudo -S sh '{{.Path}}'",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/cloud.sh",
+        "scripts/php.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}

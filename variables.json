@@ -1,7 +1,6 @@
 {
   "os_source_image": "bc945c85-384f-4f03-ab47-641c866cfcac",
   "os_network": "891b4750-2692-4ff2-afed-356b9d182df7",
-  "docker_version": "1.9.1-1",
-  "output_name": "k8s-centos-7-x86_64"
+  "output_name": "centos7-app"
 }
 
